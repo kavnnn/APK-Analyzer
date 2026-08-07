@@ -78,4 +78,4 @@ macOS via GitHub Actions, with binaries attached to the GitHub Release.
 
 ## License
 
-MIT
+[MIT License](https://raw.githubusercontent.com/kavnnn/APK-Analyzer/refs/heads/main/LICENSE)
