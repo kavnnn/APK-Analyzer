@@ -1,0 +1,57 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install zlib (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y zlib1g-dev
+
+      - name: Install zlib (macOS)
+        if: runner.os == 'macOS'
+        run: brew install zlib
+
+      - name: Configure
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Package
+        shell: bash
+        run: |
+          mkdir dist
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            cp build/Release/apk-analyzer.exe dist/apk-analyzer-windows.exe
+          elif [ "$RUNNER_OS" == "macOS" ]; then
+            cp build/apk-analyzer dist/apk-analyzer-macos
+          else
+            cp build/apk-analyzer dist/apk-analyzer-linux
+          fi
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: apk-analyzer-${{ matrix.os }}
+          path: dist/*
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/**/*
