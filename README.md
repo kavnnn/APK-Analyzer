@@ -43,6 +43,53 @@ g++ -std=c++17 -Iinclude -O2 src/*.cpp -lz -o apk-analyzer
 ./apk-analyzer path/to/app.apk
 ```
 
+## Preview
+
+```
+> Kavn: apk-analyzer myAPK.apk
+APK Analyzer
+File: myAPK.apk
+
+== Archive Contents ==
+  Entries        : 1061
+  Uncompressed   : 73.5 MB
+
+== Native Libraries ==
+  lib/arm64-v8a/libAML.so (1.12 MB)
+  lib/arm64-v8a/libGameEngine.so (8.50 MB)
+  lib/arm64-v8a/libMultiplayer.so (3.93 MB)
+  lib/arm64-v8a/libOpenAL64.so (1.65 MB)
+  lib/arm64-v8a/libSCAnd.so (3.16 MB)
+  lib/arm64-v8a/libbass.so (317.2 KB)
+  lib/arm64-v8a/libbass_ssl.so (1.64 MB)
+  lib/arm64-v8a/libcrashlytics-common.so (844.4 KB)
+  lib/arm64-v8a/libcrashlytics-handler.so (216.9 KB)
+  lib/arm64-v8a/libcrashlytics-trampoline.so (4.63 KB)
+  lib/arm64-v8a/libcrashlytics.so (226.5 KB)
+  lib/arm64-v8a/libdatastore_shared_counter.so (6.95 KB)
+  lib/arm64-v8a/libluajit-5.1.so (948.9 KB)
+  lib/arm64-v8a/libmonetloader.so (6.70 MB)
+  lib/arm64-v8a/libpl_droidsonroids_gif.so (41.4 KB)
+  lib/arm64-v8a/libshadowhook.so (72.8 KB)
+
+== Signing / META-INF ==
+  (no v1/META-INF signature files found - may use APK Signature Scheme v2/v3)
+
+== AndroidManifest.xml ==
+  Strings found  : 0
+  Permissions    : 0
+
+== classes.dex ==
+  Magic          : dex\n038
+  File size      : 8906096 bytes
+  String IDs     : 60226
+  Type IDs       : 9306
+  Method IDs     : 65459
+  Class defs     : 7381
+
+Done.
+```
+
 ## Project Structure
 
 ```
