@@ -8,7 +8,18 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif()
 
-find_package(ZLIB REQUIRED)
+# Vendor zlib via FetchContent instead of relying on a system package.
+# This keeps the build identical (and dependency-free) across Linux,
+# macOS, and Windows CI runners - no apt/brew/vcpkg steps needed.
+include(FetchContent)
+set(SKIP_INSTALL_ALL ON CACHE BOOL "" FORCE)
+set(ZLIB_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+FetchContent_Declare(
+    zlib
+    GIT_REPOSITORY https://github.com/madler/zlib.git
+    GIT_TAG        v1.3.1
+)
+FetchContent_MakeAvailable(zlib)
 
 add_executable(apk-analyzer
     src/main.cpp
@@ -16,5 +27,10 @@ add_executable(apk-analyzer
     src/axml_parser.cpp
 )
 
-target_include_directories(apk-analyzer PRIVATE include)
-target_link_libraries(apk-analyzer PRIVATE ZLIB::ZLIB)
+target_include_directories(apk-analyzer PRIVATE
+    include
+    ${zlib_SOURCE_DIR}
+    ${zlib_BINARY_DIR}
+)
+
+target_link_libraries(apk-analyzer PRIVATE zlibstatic)
